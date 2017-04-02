@@ -111,6 +111,47 @@
                 }
             }
         },
+        "/monthsByKidnap/{from}/{to}/": {
+            "get": {
+                "description": "Returns fixed set of months (12) filtered by 'kidnap' event type. Sorting by months common order.  ",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/from"
+                    },
+                    {
+                        "$ref": "#/parameters/to"
+                    },
+                    {
+                        "$ref": "#/parameters/region"
+                    },
+                    {
+                        "$ref": "#/parameters/country"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response with additional fields/collections per data objects.",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "value": 130,
+                                    "name": "jan",
+                                    "title": "January"
+                                },
+                                {
+                                    "value": 73,
+                                    "name": "feb",
+                                    "title": "February"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/locationsByKidnap/{from}/{to}/": {
             "get": {
                 "description": "Returns fixed set of locations (places/spots) filtered by 'kidnap' event type with various filtering, ordering and output settings.",

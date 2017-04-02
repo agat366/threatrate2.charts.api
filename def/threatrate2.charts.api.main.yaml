@@ -1,443 +1,465 @@
-# this is an example of the Uber API
-# as a demonstration of an API spec in YAML
 swagger: '2.0'
 info:
   title: ThreatRate 2
-  version: "2.0.0"
-# the domain of the service
-# array of all schemes that your API supports
+  version: 2.0.0
 schemes:
   - https
-
 basePath: /api
 produces:
   - application/json
-# -----------------------------------------
-# ----------------------------< api 
-# -----------------------------------------
 paths:
-  /countriesByKidnap/{from}/{to}/:
+  '/countriesByKidnap/{from}/{to}/':
     get:
-      description: Returns countries filtered by 'kidnap' event type with various filtering, ordering and output settings. The endpoint serves big amount of  charts.
+      description: >-
+        Returns countries filtered by 'kidnap' event type with various
+        filtering, ordering and output settings. The endpoint serves big amount
+        of  charts.
       parameters:
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
-    
-        - $ref: '#/parameters/top' # default value (if not passed) must be around 200 (or whichever good enough for the system performance).
-    
+        - $ref: '#/parameters/top'
         - name: filter
           type: string
           in: query
           required: false
-          enum: ['children', 'adults', 'locals', 'foreigners']
+          enum:
+            - children
+            - adults
+            - locals
+            - foreigners
           description: Filters initial data by one of predefined (in the enum) category.
-          
         - name: orderBy
           type: string
           in: query
-          enum: ['kidnap', 'duration', 'ransom']
-          default: 'kidnap'
-          required: false # on if requested. Otherwise soring is done by 'kidnap' amount
-          description: Is important to sort the output set by this parameter before taking top (first) items in case of defined '#/parameters/top' parameter. If not defined, the data is sorted by kidnap amount per country.
-    
+          enum:
+            - kidnap
+            - duration
+            - ransom
+          default: kidnap
+          required: false
+          description: >-
+            Is important to sort the output set by this parameter before taking
+            top (first) items in case of defined '#/parameters/top' parameter.
+            If not defined, the data is sorted by kidnap amount per country.
         - name: include
           type: array
           collectionFormat: csv
           in: query
-          items: 
+          items:
             type: string
           required: false
-          enum: ['duration', 'ransom', 'locations', 'males', 'females']
-          description: Coma delimited array. Defines which additional data/properties should be returned with basic data (read response additional fields description). In cae of 'locations' value, only three top location are returned (ordered by the highest value).
-      
+          enum:
+            - duration
+            - ransom
+            - locations
+            - males
+            - females
+          description: >-
+            Coma delimited array. Defines which additional data/properties
+            should be returned with basic data (read response additional fields
+            description). In cae of 'locations' value, only three top location
+            are returned (ordered by the highest value).
       responses:
-        200:
-          description: A standard response with additional fields/collections per data objects.
+        '200':
+          description: >-
+            A standard response with additional fields/collections per data
+            objects.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
               - value: 234
-                name: "can"
-                title: "Canada"
-
-                # --- additional fields based on "inlude" parameter
-                
-                duration: 9 # in days
-                ransom: 2 # in millions
-                
-                locations: # array of standard type data objects: geo-locations of a country. Oonly three top values is returned!
+                name: can
+                title: Canada
+                duration: 9
+                ransom: 2
+                locations:
                   - value: 110
-                    title: "Ottawa"
+                    title: Ottawa
                   - value: 92
-                    title: "Vancouver"
+                    title: Vancouver
                   - value: 12
-                    title: "Toronto"
-                
-                males: 145 # males + femailes = sum (the object common value)
+                    title: Toronto
+                males: 145
                 females: 89
-                
               - value: 150
-                name: "etc..."
-
-# --------------------------------
-
-  /locationsByKidnap/{from}/{to}/:
+                name: etc...
+  '/monthsByKidnap/{from}/{to}/':
     get:
-      description: Returns fixed set of locations (places/spots) filtered by 'kidnap' event type with various filtering, ordering and output settings.
+      description: >-
+        Returns fixed set of months (12) filtered by 'kidnap' event type. Sorting by months common order.  
       parameters:
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
-    
-        - $ref: '#/parameters/region' # one of region/country should be presented only (if requested). In case of both params existence, 'country' should be used.
+        - $ref: '#/parameters/region'
         - $ref: '#/parameters/country'
-
-        - name: include
-          type: array
-          collectionFormat: csv
-          in: query
-          items: 
-            type: string
-          enum: ['male', 'female']
-          required: false
-          description: Coma delimited array. Defines which additional data/properties should be returned with basic data (read response additional fields description).
-      
       responses:
-        200:
-          description: A standard response with additional fields/collections per data objects.
+        '200':
+          description: >-
+            A standard response with additional fields/collections per data
+            objects.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
               - value: 130
-                name: "home" # "hotel", "public" ...
-                title: "Home" # "Hotel", "Public area" ...
-                percentage: 0.15 # usually can be omitted
-
-                # --- additional fields based on "inlude" parameter
-
-                males: 80 # males + femailes = sum (the object common value)
-                females: 50
-                
+                name: jan
+                title: January
               - value: 73
-                name: "hotel" # etc.
-
-  
-# --------------------------------
-
-  /ageGroupsByKidnap/{from}/{to}/:
+                name: feb
+                title: February
+                
+  '/locationsByKidnap/{from}/{to}/':
     get:
-      description: Returns accumulated 'kidnap' event amount groupped by fixed set of age groups. (Sorted from 'younges' to 'oldest'). (Enum values '1-10', '11-18', '19-25', '26-35', '36-65', '66-up')
+      description: >-
+        Returns fixed set of locations (places/spots) filtered by 'kidnap' event
+        type with various filtering, ordering and output settings.
       parameters:
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
-    
-        - $ref: '#/parameters/region' # a standard for most of requests
+        - $ref: '#/parameters/region'
         - $ref: '#/parameters/country'
-
         - name: include
           type: array
           collectionFormat: csv
           in: query
-          items: 
+          items:
+            type: string
+          enum:
+            - male
+            - female
+          required: false
+          description: >-
+            Coma delimited array. Defines which additional data/properties
+            should be returned with basic data (read response additional fields
+            description).
+      responses:
+        '200':
+          description: >-
+            A standard response with additional fields/collections per data
+            objects.
+          schema:
+            $ref: '#/definitions/StandardDataResponse'
+          examples:
+            result:
+              - value: 130
+                name: home
+                title: Home
+                percentage: 0.15
+                males: 80
+                females: 50
+              - value: 73
+                name: hotel
+  '/ageGroupsByKidnap/{from}/{to}/':
+    get:
+      description: >-
+        Returns accumulated 'kidnap' event amount groupped by fixed set of age
+        groups. (Sorted from 'younges' to 'oldest'). (Enum values '1-10',
+        '11-18', '19-25', '26-35', '36-65', '66-up')
+      parameters:
+        - $ref: '#/parameters/from'
+        - $ref: '#/parameters/to'
+        - $ref: '#/parameters/region'
+        - $ref: '#/parameters/country'
+        - name: include
+          type: array
+          collectionFormat: csv
+          in: query
+          items:
             type: string
           required: false
-          enum: ['duration_range', 'ransom_range'] # only if requested
-          description: Coma delimited array. Defines which additional data/properties should be returned with basic data ('duration_range' and 'ransom_range' differ from 'duration' and 'ransom' (not like for other similar endpoints)).
-      
+          enum:
+            - duration_range
+            - ransom_range
+          description: >-
+            Coma delimited array. Defines which additional data/properties
+            should be returned with basic data ('duration_range' and
+            'ransom_range' differ from 'duration' and 'ransom' (not like for
+            other similar endpoints)).
       responses:
-        200:
-          description: A standard response with additional fields/collections per data objects.
+        '200':
+          description: >-
+            A standard response with additional fields/collections per data
+            objects.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
               - value: 5
-                name: "1-10" # "11-18", "public" ...
-                title: "1-10 years" # "...", "66 up"
-
-                # --- additional fields based on "inlude" parameter
-
+                name: 1-10
+                title: 1-10 years
                 duration_range:
-                  from: 50 # days
+                  from: 50
                   to: 55
                 ransome_range:
-                  from: .5 # millions
+                  from: 0.5
                   to: 2
-                
               - value: 15
-                name: "11-18" # etc.
-
-# --------------------------------
-
-  /profsByKidnap/{from}/{to}/:
+                name: 11-18
+  '/profsByKidnap/{from}/{to}/':
     get:
-      description: Returns accumulated 'kidnap' event amount groupped by fixed set of professional groups. (Sorted by kidnap event value).
+      description: >-
+        Returns accumulated 'kidnap' event amount groupped by fixed set of
+        professional groups. (Sorted by kidnap event value).
       parameters:
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
-    
-        - $ref: '#/parameters/region' # a standard for most of requests
+        - $ref: '#/parameters/region'
         - $ref: '#/parameters/country'
-
       responses:
-        200:
-          description: A standard response with additional fields/collections per data objects.
+        '200':
+          description: >-
+            A standard response with additional fields/collections per data
+            objects.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
               - value: 7
-                name: "ngo" # "transportation", "security-agencies"
-                title: "NGO" # "Transportation", "Security agencies"
-
-                # --- additional fields based on "inlude" parameter
-
+                name: ngo
+                title: NGO
                 duration_range:
-                  from: 50 # days
+                  from: 50
                   to: 55
                 ransome_range:
-                  from: .5 # millions
+                  from: 0.5
                   to: 2
-                
               - value: 15
-                name: "11-18" # etc.
-
-
-# --------------------------------
-
-  /regions/{from}/{to}/:
+                name: 11-18
+  '/regions/{from}/{to}/':
     get:
-      description: Returns accumulated amount of the event requested in 'filter' param groupped by fixed set of regions. (Sorted by 'value'). (Enum values are standard accross the requests. The enum defined in '#parameters/region').
+      description: >-
+        Returns accumulated amount of the event requested in 'filter' param
+        groupped by fixed set of regions. (Sorted by 'value'). (Enum values are
+        standard accross the requests. The enum defined in
+        '#parameters/region').
       parameters:
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
-    
         - name: filter
           type: string
           in: query
           required: false
-          enum: ['kidnap', 'vechicle']
-          default: 'kidnap'
+          enum:
+            - kidnap
+            - vechicle
+          default: kidnap
           description: Filters initial data by one of predefined (in the enum) category.
-          
-
         - name: include
           type: array
           collectionFormat: csv
           in: query
-          items: 
+          items:
             type: string
           required: false
-          enum: ['single', 'multi', 'duration_range', 'ransom_range'] # only if requested. 'Single' and 'Multi' varies on amount of people was involved into the event ('One' or 'More than one' correspondingly).
-          description: Coma delimited array. Defines which additional data/properties should be returned with basic data ('duration_range' and 'ransom_range' differ from 'duration' and 'ransom' (not like for other similar endpoints)).
-      
+          enum:
+            - single
+            - multi
+            - duration_range
+            - ransom_range
+          description: >-
+            Coma delimited array. Defines which additional data/properties
+            should be returned with basic data ('duration_range' and
+            'ransom_range' differ from 'duration' and 'ransom' (not like for
+            other similar endpoints)).
       responses:
-        200:
-          description: A standard response with additional fields/collections per data objects.
+        '200':
+          description: >-
+            A standard response with additional fields/collections per data
+            objects.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
               - value: 155
-                name: "namerica" # "samerica", "europe" ...
-                title: "America" # "LATAM", "Europe"
-
+                name: namerica
+                title: America
                 single: 100
                 multi: 55
-                
-                # --- additional fields based on "inlude" parameter
-
                 duration_range:
-                  from: 12 # days
+                  from: 12
                   to: 20
                 ransome_range:
-                  from: .5 # millions
+                  from: 0.5
                   to: 2
-                
               - value: 15
-                name: "samerica" # etc.
-
-
-# --------------------------------
-
-  /countries/{from}/{to}/:
+                name: samerica
+  '/countries/{from}/{to}/':
     get:
-      description: Returns accumulated amount of the event requested in 'filter' param grouped by contry returned. (Sorted by 'value' (total)).
+      description: >-
+        Returns accumulated amount of the event requested in 'filter' param
+        grouped by contry returned. (Sorted by 'value' (total)).
       parameters:
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
-    
-        - $ref: '#/parameters/region' # potentially might be implemented
-
+        - $ref: '#/parameters/region'
         - name: filter
           type: string
           in: query
           required: false
-          enum: ['kidnap', 'vechicle', 'unrest', 'suicide', 'kidnap_victims_killed']
-          default: 'kidnap'
+          enum:
+            - kidnap
+            - vechicle
+            - unrest
+            - suicide
+            - kidnap_victims_killed
+          default: kidnap
           description: Filters initial data by one of predefined (in the enum) category.
-          
-
         - name: include
           type: array
           collectionFormat: csv
           in: query
-          items: 
+          items:
             type: string
           required: false
-          enum: ['unrest_categories']
-          description:  Should be included only when 'unrest' filter is applied (otherwise it has no sense). Categores should present even with empty data (per category).
-      
+          enum:
+            - unrest_categories
+          description: >-
+            Should be included only when 'unrest' filter is applied (otherwise
+            it has no sense). Categores should present even with empty data (per
+            category).
       responses:
-        200:
-          description: A standard response with additional fields/collections per data objects.
+        '200':
+          description: >-
+            A standard response with additional fields/collections per data
+            objects.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
-              - value: 267 # total
-                name: "bur" # "yem", "syr" ...
-                title: "Burundi" # "Yemen", "Syria"
-
+              - value: 267
+                name: bur
+                title: Burundi
                 unrest_categories:
                   - value: 40
-                    name: 'terrorism'
-                    title: 'Terrorism'
+                    name: terrorism
+                    title: Terrorism
                   - value: 15
-                    name: 'rebel'
-                    title: 'Rebel Activity'
+                    name: rebel
+                    title: Rebel Activity
                   - value: 27
-                    name: 'racial'
-                    title: 'Racially Motivated'
-
+                    name: racial
+                    title: Racially Motivated
               - value: 290
-                name: "yem" # etc.
-
-
-# --------------------------------
-
-  /attacksTypes/{from}/{to}/:
+                name: yem
+  '/attacksTypes/{from}/{to}/':
     get:
-      description: Returns accumulated amount (incl. in percentage) of the events groupped by fixed set of terrorist attack types. (Sorted by 'value'). Attacks types set should always present even if no data per type found.
+      description: >-
+        Returns accumulated amount (incl. in percentage) of the events groupped
+        by fixed set of terrorist attack types. (Sorted by 'value'). Attacks
+        types set should always present even if no data per type found.
       parameters:
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
-    
-        - $ref: '#/parameters/region' # a standard for most of requests
+        - $ref: '#/parameters/region'
         - $ref: '#/parameters/country'
-
       responses:
-        200:
-          description: A standard response with additional fields/collections per data objects.
+        '200':
+          description: >-
+            A standard response with additional fields/collections per data
+            objects.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
               - value: 250
-                percentage: 0.45 # (from common amount)
-                name: "hijaking" # "wmd", "grenade" ...
-                title: "Hijaking" # "WMD", "Grenade Attack"
-
+                percentage: 0.45
+                name: hijaking
+                title: Hijaking
               - value: 27
                 percentage: 0.08
-                name: "wmd" # etc.
-
-
-# --------------------------------
-
-  /yearsByKidnapResult/{from}/{to}/:
+                name: wmd
+  '/yearsByKidnapResult/{from}/{to}/':
     get:
-      description: Returns accumulated amount of the events groupped by year and predefined set of kidnap result types ('killed', 'released', 'escaped', 'rescued'). Ordered by year (recent-oldest).
-      
+      description: >-
+        Returns accumulated amount of the events groupped by year and predefined
+        set of kidnap result types ('killed', 'released', 'escaped', 'rescued').
+        Ordered by year (recent-oldest).
       parameters:
-        - $ref: '#/parameters/from' # expected to be 'YYYY' format only
-        - $ref: '#/parameters/to' # expected to be 'YYYY' format only
-    
-        - $ref: '#/parameters/region' # a standard for most of requests
+        - $ref: '#/parameters/from'
+        - $ref: '#/parameters/to'
+        - $ref: '#/parameters/region'
         - $ref: '#/parameters/country'
-
       responses:
-        200:
-          description: A standard response with additional fields/collections per data objects.
+        '200':
+          description: >-
+            A standard response with additional fields/collections per data
+            objects.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
               - value: 85
                 name: 2015
-                title: "2016"
+                title: '2016'
                 data:
                   - value: 15
-                    name: 'killed'
-                    title: 'Killed'
+                    name: killed
+                    title: Killed
                   - value: 20
-                    name: 'released'
-                    title: 'Released'
+                    name: released
+                    title: Released
                   - value: 25
-                    name: 'escaped'
-                    title: 'Escaped'
+                    name: escaped
+                    title: Escaped
                   - value: 25
-                    name: 'resqued'
-                    title: 'Resqued'
-
-
+                    name: resqued
+                    title: Resqued
               - value: 2016
-                name: 2015 # etc.
-
-
-# -----------------------------------------
-# ----------------------------< parameters 
-# -----------------------------------------
-
+                name: 2015
 parameters:
   from:
     name: from
     in: path
     type: string
     required: true
-    description: Format - 'YYYYMM' (or 'YYYY' for some cases). Date of start of filtered period. Potentially can be optional (in that case with 'to' parameter as well) if backend processing speed allows that (due to big amount of data).
-    
+    description: >-
+      Format - 'YYYYMM' (or 'YYYY' for some cases). Date of start of filtered
+      period. Potentially can be optional (in that case with 'to' parameter as
+      well) if backend processing speed allows that (due to big amount of data).
   to:
     name: to
     in: path
     type: string
     required: true
-    description: Format - 'YYYYMM' (or 'YYYY' for some cases). Date of end of filtered period. In case if omitting the last date (year/month) expect to be current month/year. Data of the month/year defined must be included into results returned.
-    
-# query standard params ----------
-
-  top: 
+    description: >-
+      Format - 'YYYYMM' (or 'YYYY' for some cases). Date of end of filtered
+      period. In case if omitting the last date (year/month) expect to be
+      current month/year. Data of the month/year defined must be included into
+      results returned.
+  top:
     name: top
     in: query
     type: integer
     default: 200
     required: false
-    description: If provided, defines maximum amount of items to be returned ordered default value param (or the one defined by 'orderBy').
-
-# country/region
-  region: 
+    description: >-
+      If provided, defines maximum amount of items to be returned ordered
+      default value param (or the one defined by 'orderBy').
+  region:
     name: region
     in: query
     type: string
     required: false
-    enum: ["namerica", "samerica", "europe", "asia", "africa", "australia"]
-    description: If provided, the result must include data on all countries of this region.
-
-  country: 
+    enum:
+      - namerica
+      - samerica
+      - europe
+      - asia
+      - africa
+      - australia
+    description: 'If provided, the result must include data on all countries of this region.'
+  country:
     name: country
     in: query
     type: integer
     required: false
-    enum: ["country predefine codes"]
-    description: If provided, the result must include data on particular country only. In case if 'region' parameter is also provided, only 'country' is uesd.
-
-
-# -----------------------------------------
-# ----------------------------< definitions 
-# -----------------------------------------
+    enum:
+      - country predefine codes
+    description: >-
+      If provided, the result must include data on particular country only. In
+      case if 'region' parameter is also provided, only 'country' is uesd.
 definitions:
-  # Definition for any response
   StandardResponse:
     type: object
     properties:
@@ -446,36 +468,40 @@ definitions:
         description: Container for main data returned.
       lib:
         type: object
-        description: A library with any additional data available. Can be empty if no special data returned.
+        description: >-
+          A library with any additional data available. Can be empty if no
+          special data returned.
         properties:
           title:
             type: string
       status:
         type: string
-        description: Is mostly "success" for 200 status response. Might contain "warning" sometimes.
-        enum: ["success", "warning", "error"]
+        description: >-
+          Is mostly "success" for 200 status response. Might contain "warning"
+          sometimes.
+        enum:
+          - success
+          - warning
+          - error
       message:
         type: string
-        description: A message of error in case of "error" status. Or additional info for 200.
+        description: >-
+          A message of error in case of "error" status. Or additional info for
+          200.
       code:
         type: integer
         description: Code error in case of "error" response.
     required:
       - status
       - result
-
-# Standardized data request
   StandardDataResponse:
     allOf:
       - $ref: '#/definitions/StandardResponse'
       - properties:
           result:
             type: array
-            items: 
+            items:
               $ref: '#/definitions/StandardValue'
-
-
-# Standardized value for a chart point/item
   StandardValue:
     type: object
     properties:
@@ -484,7 +510,11 @@ definitions:
         description: A numeric/string value if exists.
       name:
         type: string
-        description: Optional field for specific data. For instance if the returning item is a part of some library (like cities) (the library can be also included in 'lib' set of the result. (For instance, the city returned would provide its name value for further using).
+        description: >-
+          Optional field for specific data. For instance if the returning item
+          is a part of some library (like cities) (the library can be also
+          included in 'lib' set of the result. (For instance, the city returned
+          would provide its name value for further using).
       title:
         type: string
         description: Main value for representing titling of a data node.
@@ -494,9 +524,8 @@ definitions:
         description: Main value for representing of numeric percentage (not value!)
       group:
         type: string
-        description: Optional field for specifying if the value belongs to any of groups defined in #definitions/StandardResponse/lib
+        description: >-
+          Optional field for specifying if the value belongs to any of groups
+          defined in
     required:
       - title
-      
-
-
