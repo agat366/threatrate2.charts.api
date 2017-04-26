@@ -211,7 +211,7 @@ paths:
                   to: 2
               - value: 15
                 name: 11-18
-  '/regionsByKidnep/{from}/{to}/':
+  '/regionsByKidnap/{from}/{to}/':
     get:
       description: >-
         Returns accumulated 'kidnap' event amount groupped by fixed set of regions. (Sorted by kidnap event value).
@@ -304,6 +304,7 @@ paths:
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
         - $ref: '#/parameters/region'
+        - $ref: '#/parameters/top'
         - name: filter
           type: string
           in: query

@@ -316,7 +316,7 @@
                 }
             }
         },
-        "/regionsByKidnep/{from}/{to}/": {
+        "/regionsByKidnap/{from}/{to}/": {
             "get": {
                 "description": "Returns accumulated 'kidnap' event amount groupped by fixed set of regions. (Sorted by kidnap event value).",
                 "parameters": [
@@ -446,6 +446,9 @@
                     },
                     {
                         "$ref": "#/parameters/region"
+                    },
+                    {
+                        "$ref": "#/parameters/top"
                     },
                     {
                         "name": "filter",
