@@ -27,6 +27,8 @@ paths:
             - adults
             - locals
             - foreigners
+            - males
+            - females
           description: Filters initial data by one of predefined (in the enum) category.
         - name: orderBy
           type: string
@@ -51,43 +53,37 @@ paths:
           enum:
             - duration
             - ransom
-            - locations
-            - males
-            - females
+            - geolocations
           description: >-
-            Coma delimited array. Defines which additional data/properties
-            should be returned with basic data (read response additional fields
-            description). In cae of 'locations' value, only three top location
-            are returned (ordered by the highest value).
+            Coma delimited array. Defines which additional data/properties should be returned with basic data (read response additional fields description). In case of 'geolocations' value, only three top geolocation (parts of the country are returned (ordered by the highest value).
       responses:
         '200':
           description: >-
             A standard response with additional fields/collections per data
-            objects.
+            objects. Country id is required.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
               - value: 234
+                id: 93
                 name: can
                 title: Canada
                 duration: 9
                 ransom: 2
-                locations:
+                geolocations:
                   - value: 110
                     title: Ottawa
                   - value: 92
                     title: Vancouver
                   - value: 12
                     title: Toronto
-                males: 145
-                females: 89
               - value: 150
                 name: etc...
   '/monthsByKidnap/{from}/{to}/':
     get:
       description: >-
-        Returns fixed set of months (12) filtered by 'kidnap' event type. Sorting by months common order.  
+        Returns fixed set of months (12) filtered by 'kidnap' event type. Sorting by months common order. From and to params must be YYYYMM format, indicating first and last months of the period requested.
       parameters:
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
@@ -96,48 +92,40 @@ paths:
       responses:
         '200':
           description: >-
-            A standard response with additional fields/collections per data
-            objects.
+            A standard response with additional fields/collections per data objects. Months id (by order in a year) and name are required.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
               - value: 130
+                id: 0
                 name: jan
                 title: January
               - value: 73
+                id: 1
                 name: feb
                 title: February
-                
   '/locationsByKidnap/{from}/{to}/':
     get:
       description: >-
-        Returns fixed set of locations (places/spots) filtered by 'kidnap' event
-        type with various filtering, ordering and output settings.
+        Returns fixed set of locations (places/spots) filtered by 'kidnap' event type with various filtering, ordering and output settings.
       parameters:
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
         - $ref: '#/parameters/region'
         - $ref: '#/parameters/country'
-        - name: include
-          type: array
-          collectionFormat: csv
+        - name: filter
+          type: string
           in: query
-          items:
-            type: string
-          enum:
-            - male
-            - female
           required: false
-          description: >-
-            Coma delimited array. Defines which additional data/properties
-            should be returned with basic data (read response additional fields
-            description).
+          enum:
+            - males
+            - females
+          description: Filters initial data by one of predefined (in the enum) category.
       responses:
         '200':
           description: >-
-            A standard response with additional fields/collections per data
-            objects.
+            A standard response with additional fields/collections per data objects. Id of the location can be ommited, but name is required.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
@@ -146,8 +134,6 @@ paths:
                 name: home
                 title: Home
                 percentage: 0.15
-                males: 80
-                females: 50
               - value: 73
                 name: hotel
   '/ageGroupsByKidnap/{from}/{to}/':
@@ -180,7 +166,7 @@ paths:
         '200':
           description: >-
             A standard response with additional fields/collections per data
-            objects.
+            objects. Age group name is required. Id can be omitted.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
@@ -191,7 +177,7 @@ paths:
                 duration_range:
                   from: 50
                   to: 55
-                ransome_range:
+                ransom_range:
                   from: 0.5
                   to: 2
               - value: 15
@@ -199,8 +185,7 @@ paths:
   '/profsByKidnap/{from}/{to}/':
     get:
       description: >-
-        Returns accumulated 'kidnap' event amount groupped by fixed set of
-        professional groups. (Sorted by kidnap event value).
+        Returns accumulated 'kidnap' event amount groupped by fixed set of professional groups. (Sorted by kidnap event value).
       parameters:
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
@@ -210,7 +195,7 @@ paths:
         '200':
           description: >-
             A standard response with additional fields/collections per data
-            objects.
+            objects. Group name is required.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
@@ -221,18 +206,15 @@ paths:
                 duration_range:
                   from: 50
                   to: 55
-                ransome_range:
+                ransom_range:
                   from: 0.5
                   to: 2
               - value: 15
                 name: 11-18
-  '/regions/{from}/{to}/':
+  '/regionsByKidnep/{from}/{to}/':
     get:
       description: >-
-        Returns accumulated amount of the event requested in 'filter' param
-        groupped by fixed set of regions. (Sorted by 'value'). (Enum values are
-        standard accross the requests. The enum defined in
-        '#parameters/region').
+        Returns accumulated 'kidnap' event amount groupped by fixed set of regions. (Sorted by kidnap event value).
       parameters:
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
@@ -241,9 +223,8 @@ paths:
           in: query
           required: false
           enum:
-            - kidnap
-            - vechicle
-          default: kidnap
+            - single
+            - multi
           description: Filters initial data by one of predefined (in the enum) category.
         - name: include
           type: array
@@ -253,20 +234,17 @@ paths:
             type: string
           required: false
           enum:
-            - single
-            - multi
+            - duration
+            - ransom
             - duration_range
             - ransom_range
           description: >-
-            Coma delimited array. Defines which additional data/properties
-            should be returned with basic data ('duration_range' and
-            'ransom_range' differ from 'duration' and 'ransom' (not like for
-            other similar endpoints)).
+            Coma delimited array. Defines which additional data/properties should be returned with basic data ('duration_range' and 'ransom_range' differ from 'duration' and 'ransom' (unlike other similar endpoints)).
       responses:
         '200':
           description: >-
             A standard response with additional fields/collections per data
-            objects.
+            objects. Region name is required.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
@@ -274,14 +252,47 @@ paths:
               - value: 155
                 name: namerica
                 title: America
-                single: 100
-                multi: 55
+                duration: 15
                 duration_range:
                   from: 12
                   to: 20
-                ransome_range:
+                ransom: 1
+                ransom_range:
                   from: 0.5
                   to: 2
+              - value: 15
+                name: samerica
+  '/regions/{from}/{to}/':
+    get:
+      description: >-
+        Returns accumulated amount of the event requested in 'filter' param
+        groupped by fixed set of regions. (Sorted by 'value').
+      parameters:
+        - $ref: '#/parameters/from'
+        - $ref: '#/parameters/to'
+        - name: filter
+          type: string
+          in: query
+          required: false
+          enum:
+            - kidnap
+            - vehicle
+          default: kidnap
+          description: >-
+            Filters initial data by one of predefined (in the enum) category.
+            Additional filter categories should be further implemented.
+      responses:
+        '200':
+          description: >-
+            A standard response with additional fields/collections per data
+            objects. Region name is required.
+          schema:
+            $ref: '#/definitions/StandardDataResponse'
+          examples:
+            result:
+              - value: 155
+                name: namerica
+                title: America
               - value: 15
                 name: samerica
   '/countries/{from}/{to}/':
@@ -299,7 +310,7 @@ paths:
           required: false
           enum:
             - kidnap
-            - vechicle
+            - vehicle
             - unrest
             - suicide
             - kidnap_victims_killed
@@ -322,13 +333,13 @@ paths:
         '200':
           description: >-
             A standard response with additional fields/collections per data
-            objects.
+            objects. Country id is required.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
               - value: 267
-                name: bur
+                id: 39
                 title: Burundi
                 unrest_categories:
                   - value: 40
@@ -384,13 +395,14 @@ paths:
         '200':
           description: >-
             A standard response with additional fields/collections per data
-            objects.
+            objects. Years id and name are required.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
               - value: 85
-                name: 2015
+                id: 2015
+                name: '2015'
                 title: '2016'
                 data:
                   - value: 15
@@ -405,8 +417,9 @@ paths:
                   - value: 25
                     name: resqued
                     title: Resqued
-              - value: 2016
-                name: 2015
+              - value: 135
+                id: 2016
+                name: '2016'
 parameters:
   from:
     name: from
@@ -415,8 +428,7 @@ parameters:
     required: true
     description: >-
       Format - 'YYYYMM' (or 'YYYY' for some cases). Date of start of filtered
-      period. Potentially can be optional (in that case with 'to' parameter as
-      well) if backend processing speed allows that (due to big amount of data).
+      period.
   to:
     name: to
     in: path
@@ -424,9 +436,7 @@ parameters:
     required: true
     description: >-
       Format - 'YYYYMM' (or 'YYYY' for some cases). Date of end of filtered
-      period. In case if omitting the last date (year/month) expect to be
-      current month/year. Data of the month/year defined must be included into
-      results returned.
+      period.
   top:
     name: top
     in: query
@@ -434,8 +444,7 @@ parameters:
     default: 200
     required: false
     description: >-
-      If provided, defines maximum amount of items to be returned ordered
-      default value param (or the one defined by 'orderBy').
+      If provided, defines maximum amount of items to be returned ordered default value param (or the one defined by 'orderBy'). Can have another default value for particular endpoints.
   region:
     name: region
     in: query
@@ -447,7 +456,7 @@ parameters:
       - europe
       - asia
       - africa
-      - australia
+      - oceania
     description: 'If provided, the result must include data on all countries of this region.'
   country:
     name: country
@@ -455,7 +464,7 @@ parameters:
     type: integer
     required: false
     enum:
-      - country predefine codes
+      - country predefine codes (ids)
     description: >-
       If provided, the result must include data on particular country only. In
       case if 'region' parameter is also provided, only 'country' is uesd.
@@ -466,14 +475,6 @@ definitions:
       result:
         type: object
         description: Container for main data returned.
-      lib:
-        type: object
-        description: >-
-          A library with any additional data available. Can be empty if no
-          special data returned.
-        properties:
-          title:
-            type: string
       status:
         type: string
         description: >-
@@ -505,27 +506,33 @@ definitions:
   StandardValue:
     type: object
     properties:
-      value:
-        type: string
-        description: A numeric/string value if exists.
+      id:
+        type: number
+        format: integer
+        description: >-
+          A unique identifier as number. 
+          Can be required for some endpoints. 
+          Can be replaced with 'name' parameter if not available.
       name:
         type: string
         description: >-
-          Optional field for specific data. For instance if the returning item
-          is a part of some library (like cities) (the library can be also
-          included in 'lib' set of the result. (For instance, the city returned
-          would provide its name value for further using).
+          A unique identifier as string value, which can be used instead of id (in case if id is unavailable). 
+          Can be required for some endpoints.
+      value:
+        type: number
+        format: decimal
+        description: >-
+          A numeric value if exists.
       title:
         type: string
-        description: Main value for representing titling of a data node.
+        description: >-
+          Main value for representing titling of a data node.
       percentage:
         type: number
         format: float
-        description: Main value for representing of numeric percentage (not value!)
-      group:
-        type: string
         description: >-
-          Optional field for specifying if the value belongs to any of groups
-          defined in
+          Main value for representing of numeric percentage (not value!)
     required:
-      - title
+      - id
+      - name
+      - value
