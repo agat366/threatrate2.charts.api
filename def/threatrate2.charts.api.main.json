@@ -93,6 +93,14 @@
                                     "title": "Canada",
                                     "duration": 9,
                                     "ransom": 2,
+                                    "duration_range": {
+                                        "from": 50,
+                                        "to": 55
+                                    },
+                                    "ransom_range": {
+                                        "from": 0.5,
+                                        "to": 2
+                                    },
                                     "geolocations": [
                                         {
                                             "value": 110,
@@ -304,19 +312,12 @@
                                 {
                                     "value": 7,
                                     "name": "ngo",
-                                    "title": "NGO",
-                                    "duration_range": {
-                                        "from": 50,
-                                        "to": 55
-                                    },
-                                    "ransom_range": {
-                                        "from": 0.5,
-                                        "to": 2
-                                    }
+                                    "title": "NGO"
                                 },
                                 {
                                     "value": 15,
-                                    "name": "11-18"
+                                    "name": "medical",
+                                    "title": "Medical"
                                 }
                             ]
                         }
