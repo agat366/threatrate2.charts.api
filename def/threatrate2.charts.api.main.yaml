@@ -18,6 +18,8 @@ paths:
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
         - $ref: '#/parameters/top'
+        - $ref: '#/parameters/region'
+        - $ref: '#/parameters/country'
         - name: filter
           type: string
           in: query
@@ -354,7 +356,7 @@ paths:
                     title: Racially Motivated
               - value: 290
                 name: yem
-  '/attacksTypes/{from}/{to}/':
+  '/attackTypes/{from}/{to}/':
     get:
       description: >-
         Returns accumulated amount (incl. in percentage) of the events groupped
@@ -532,7 +534,8 @@ definitions:
         type: number
         format: float
         description: >-
-          Main value for representing of numeric percentage (not value!)
+          Main value for presenting of numeric percentage (not value!).
+          Should be rounded to max 4 digits after comma.
     required:
       - id
       - name

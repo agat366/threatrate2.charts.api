@@ -26,6 +26,12 @@
                         "$ref": "#/parameters/top"
                     },
                     {
+                        "$ref": "#/parameters/region"
+                    },
+                    {
+                        "$ref": "#/parameters/country"
+                    },
+                    {
                         "name": "filter",
                         "type": "string",
                         "in": "query",
@@ -520,7 +526,7 @@
                 }
             }
         },
-        "/attacksTypes/{from}/{to}/": {
+        "/attackTypes/{from}/{to}/": {
             "get": {
                 "description": "Returns accumulated amount (incl. in percentage) of the events groupped by fixed set of terrorist attack types. (Sorted by 'value'). Attacks types set should always present even if no data per type found.",
                 "parameters": [
@@ -748,7 +754,7 @@
                 "percentage": {
                     "type": "number",
                     "format": "float",
-                    "description": "Main value for representing of numeric percentage (not value!)"
+                    "description": "Main value for presenting of numeric percentage (not value!). Should be rounded to max 4 digits after comma."
                 }
             },
             "required": [
