@@ -40,9 +40,7 @@
                             "children",
                             "adults",
                             "locals",
-                            "foreigners",
-                            "males",
-                            "females"
+                            "foreigners"
                         ],
                         "description": "Filters initial data by one of predefined (in the enum) category."
                     },
@@ -71,7 +69,11 @@
                         "enum": [
                             "duration",
                             "ransom",
-                            "geolocations"
+                            "duration_range",
+                            "ransom_range",
+                            "geolocations",
+                            "males",
+                            "females"
                         ],
                         "description": "Coma delimited array. Defines which additional data/properties should be returned with basic data (read response additional fields description). In case of 'geolocations' value, only three top geolocation (parts of the country are returned (ordered by the highest value)."
                     }
