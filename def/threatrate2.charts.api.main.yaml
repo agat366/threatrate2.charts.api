@@ -70,6 +70,7 @@ paths:
           examples:
             result:
               - value: 234
+                percentage: 0.15
                 id: 93
                 name: can
                 title: Canada
@@ -88,6 +89,8 @@ paths:
                     title: Vancouver
                   - value: 12
                     title: Toronto
+                males: 145,
+                females: 89
               - value: 150
                 name: etc...
   '/monthsByKidnap/{from}/{to}/':
@@ -108,13 +111,16 @@ paths:
           examples:
             result:
               - value: 130
-                id: 0
+                percentage: 0.15
+                id: 1
                 name: jan
                 title: January
+                year: 2016
               - value: 73
-                id: 1
+                id: 2
                 name: feb
                 title: February
+                year: 2016
   '/locationsByKidnap/{from}/{to}/':
     get:
       description: >-
@@ -141,10 +147,12 @@ paths:
           examples:
             result:
               - value: 130
+                percentage: 0.15
                 name: home
                 title: Home
                 percentage: 0.15
               - value: 73
+                percentage: 0.15
                 name: hotel
   '/ageGroupsByKidnap/{from}/{to}/':
     get:
@@ -182,6 +190,7 @@ paths:
           examples:
             result:
               - value: 5
+                percentage: 0.15
                 name: 1-10
                 title: 1-10 years
                 duration_range:
@@ -191,6 +200,7 @@ paths:
                   from: 0.5
                   to: 2
               - value: 15
+                percentage: 0.25
                 name: 11-18
   '/profsByKidnap/{from}/{to}/':
     get:
@@ -211,9 +221,11 @@ paths:
           examples:
             result:
               - value: 7
+                percentage: 0.15
                 name: ngo
                 title: NGO
               - value: 15
+                percentage: 0.15
                 name: medical
                 title: Medical
   '/regionsByKidnap/{from}/{to}/':
@@ -255,6 +267,7 @@ paths:
           examples:
             result:
               - value: 155
+                percentage: 0.15
                 name: namerica
                 title: America
                 duration: 15
@@ -266,8 +279,9 @@ paths:
                   from: 0.5
                   to: 2
               - value: 15
+                percentage: 0.15
                 name: samerica
-  '/regions/{from}/{to}/':
+  '/regionsByEventType/{from}/{to}/':
     get:
       description: >-
         Returns accumulated amount of the event requested in 'filter' param
@@ -296,11 +310,13 @@ paths:
           examples:
             result:
               - value: 155
+                percentage: 0.15
                 name: namerica
                 title: America
               - value: 15
+                percentage: 0.15
                 name: samerica
-  '/countries/{from}/{to}/':
+  '/countriesByEventType/{from}/{to}/':
     get:
       description: >-
         Returns accumulated amount of the event requested in 'filter' param
@@ -345,7 +361,9 @@ paths:
           examples:
             result:
               - value: 267
+                percentage: 0.15
                 id: 39
+                name: bur
                 title: Burundi
                 unrest_categories:
                   - value: 40
@@ -358,6 +376,7 @@ paths:
                     name: racial
                     title: Racially Motivated
               - value: 290
+                percentage: 0.15
                 name: yem
   '/attackTypes/{from}/{to}/':
     get:
@@ -407,9 +426,10 @@ paths:
           examples:
             result:
               - value: 85
+                percentage: 0.15
                 id: 2015
-                name: '2015'
-                title: '2016'
+                name:
+                title: '2015'
                 data:
                   - value: 15
                     name: killed
@@ -424,8 +444,9 @@ paths:
                     name: resqued
                     title: Resqued
               - value: 135
+                percentage: 0.15
                 id: 2016
-                name: '2016'
+                name:
 parameters:
   from:
     name: from

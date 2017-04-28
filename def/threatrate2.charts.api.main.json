@@ -88,6 +88,7 @@
                             "result": [
                                 {
                                     "value": 234,
+                                    "percentage": 0.15,
                                     "id": 93,
                                     "name": "can",
                                     "title": "Canada",
@@ -114,10 +115,13 @@
                                             "value": 12,
                                             "title": "Toronto"
                                         }
-                                    ]
+                                    ],
+                                    "males": 145,
+                                    "females": 89
                                 },
                                 {
                                     "value": 150,
+                                    "percentage": 0.15,
                                     "name": "etc..."
                                 }
                             ]
@@ -153,15 +157,19 @@
                             "result": [
                                 {
                                     "value": 130,
-                                    "id": 0,
+                                    "percentage": 0.15,
+                                    "id": 1,
                                     "name": "jan",
-                                    "title": "January"
+                                    "title": "January",
+                                    "year": 2016
                                 },
                                 {
                                     "value": 73,
-                                    "id": 1,
+                                    "percentage": 0.15,
+                                    "id": 2,
                                     "name": "feb",
-                                    "title": "February"
+                                    "title": "February",
+                                    "year": 2016
                                 }
                             ]
                         }
@@ -263,6 +271,7 @@
                             "result": [
                                 {
                                     "value": 5,
+                                    "percentage": 0.15,
                                     "name": "1-10",
                                     "title": "1-10 years",
                                     "duration_range": {
@@ -276,6 +285,7 @@
                                 },
                                 {
                                     "value": 15,
+                                    "percentage": 0.15,
                                     "name": "11-18"
                                 }
                             ]
@@ -311,11 +321,13 @@
                             "result": [
                                 {
                                     "value": 7,
+                                    "percentage": 0.15,
                                     "name": "ngo",
                                     "title": "NGO"
                                 },
                                 {
                                     "value": 15,
+                                    "percentage": 0.15,
                                     "name": "medical",
                                     "title": "Medical"
                                 }
@@ -374,6 +386,7 @@
                             "result": [
                                 {
                                     "value": 155,
+                                    "percentage": 0.15,
                                     "name": "namerica",
                                     "title": "America",
                                     "duration": 15,
@@ -389,6 +402,7 @@
                                 },
                                 {
                                     "value": 15,
+                                    "percentage": 0.15,
                                     "name": "samerica"
                                 }
                             ]
@@ -397,7 +411,7 @@
                 }
             }
         },
-        "/regions/{from}/{to}/": {
+        "/regionsByEventType/{from}/{to}/": {
             "get": {
                 "description": "Returns accumulated amount of the event requested in 'filter' param groupped by fixed set of regions. (Sorted by 'value').",
                 "parameters": [
@@ -430,11 +444,13 @@
                             "result": [
                                 {
                                     "value": 155,
+                                    "percentage": 0.15,
                                     "name": "namerica",
                                     "title": "America"
                                 },
                                 {
                                     "value": 15,
+                                    "percentage": 0.15,
                                     "name": "samerica"
                                 }
                             ]
@@ -443,7 +459,7 @@
                 }
             }
         },
-        "/countries/{from}/{to}/": {
+        "/countriesByEventType/{from}/{to}/": {
             "get": {
                 "description": "Returns accumulated amount of the event requested in 'filter' param grouped by contry returned. (Sorted by 'value' (total)).",
                 "parameters": [
@@ -499,7 +515,9 @@
                             "result": [
                                 {
                                     "value": 267,
+                                    "percentage": 0.15,
                                     "id": 39,
+                                    "name": "bur",
                                     "title": "Burundi",
                                     "unrest_categories": [
                                         {
@@ -521,6 +539,7 @@
                                 },
                                 {
                                     "value": 290,
+                                    "percentage": 0.15,
                                     "name": "yem"
                                 }
                             ]
@@ -598,9 +617,10 @@
                             "result": [
                                 {
                                     "value": 85,
+                                    "percentage": 0.15,
                                     "id": 2015,
-                                    "name": "2015",
-                                    "title": "2016",
+                                    "name": "",
+                                    "title": "2015",
                                     "data": [
                                         {
                                             "value": 15,
@@ -626,8 +646,9 @@
                                 },
                                 {
                                     "value": 135,
+                                    "percentage": 0.15,
                                     "id": 2016,
-                                    "name": "2016"
+                                    "name": ""
                                 }
                             ]
                         }
