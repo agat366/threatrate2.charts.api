@@ -12,9 +12,56 @@
         "application/json"
     ],
     "paths": {
+        "/sessions/": {
+            "post": {
+                "description": "Authtorization endpoint. Use Basic Auth to receive api_token. After you receive api token, you shold use it in all other enpoints, see descreption of Authorization parameter",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "type": "string",
+                        "in": "header",
+                        "required": true,
+                        "description": "put into value string with next format \"Basic crypted_credentials\", where crypted_credentials = Base64.encode(email + ':' + password)"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "you rceive api_token and email which was sended in request header",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "description": "email seneded in request header"
+                                },
+                                "api_token": {
+                                    "type": "string",
+                                    "description": "api_token for future authorization"
+                                }
+                            }
+                        },
+                        "examples": {
+                            "email": "user@test.com",
+                            "api_token": "KRJHfsg/pFSZayBODZJUc3A03cPOhuKWxrTg=="
+                        }
+                    },
+                    "401": {
+                        "description": "wrong email or password, or you use private email adress from one of next subdomains gmail, yahoo. mail, yandex",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/countries/": {
             "get": {
                 "description": "List of countries accessible by user",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/auth"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "A standard response. Country id is required. Name is downcased ISO 3166-1 Alpha-3 code",
@@ -38,6 +85,9 @@
             "get": {
                 "description": "Kidnap locations with amount of incidents, filtered by country and year",
                 "parameters": [
+                    {
+                        "$ref": "#/parameters/auth"
+                    },
                     {
                         "$ref": "#/parameters/country_id"
                     },
@@ -68,6 +118,9 @@
             "get": {
                 "description": "Adult and children genders with amount of incidents, filtered by country and year",
                 "parameters": [
+                    {
+                        "$ref": "#/parameters/auth"
+                    },
                     {
                         "$ref": "#/parameters/country_id"
                     },
@@ -110,6 +163,9 @@
                 "description": "Average duration per year filtered by country",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/auth"
+                    },
+                    {
                         "$ref": "#/parameters/country_id"
                     }
                 ],
@@ -135,6 +191,9 @@
             "get": {
                 "description": "Annual number by age & gender, filtered by country and year",
                 "parameters": [
+                    {
+                        "$ref": "#/parameters/auth"
+                    },
                     {
                         "$ref": "#/parameters/country_id"
                     },
@@ -187,6 +246,9 @@
                 "description": "Number of victims per kidnapping type, filtered by country and year. Type is Single or Multi",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/auth"
+                    },
+                    {
                         "$ref": "#/parameters/country_id"
                     },
                     {
@@ -220,6 +282,9 @@
                 "description": "Monthly kidnapping number, filtered by country and year",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/auth"
+                    },
+                    {
                         "$ref": "#/parameters/country_id"
                     },
                     {
@@ -249,6 +314,9 @@
             "get": {
                 "description": "Victim outcome, filtered by country and year",
                 "parameters": [
+                    {
+                        "$ref": "#/parameters/auth"
+                    },
                     {
                         "$ref": "#/parameters/country_id"
                     },
@@ -285,6 +353,9 @@
                 "description": "Victim nationality, filtered by country and year",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/auth"
+                    },
+                    {
                         "$ref": "#/parameters/country_id"
                     },
                     {
@@ -319,6 +390,9 @@
             "get": {
                 "description": "Victim Professional/sector background, filtered by country and year",
                 "parameters": [
+                    {
+                        "$ref": "#/parameters/auth"
+                    },
                     {
                         "$ref": "#/parameters/country_id"
                     },
@@ -355,6 +429,9 @@
                 "description": "Average Demanded Ransom US$, filtered by country",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/auth"
+                    },
+                    {
                         "$ref": "#/parameters/country_id"
                     }
                 ],
@@ -384,6 +461,9 @@
             "get": {
                 "description": "Returns countries filtered by 'kidnap' event type with various filtering, ordering and output settings. The endpoint serves big amount of  charts.",
                 "parameters": [
+                    {
+                        "$ref": "#/parameters/auth"
+                    },
                     {
                         "$ref": "#/parameters/from"
                     },
@@ -501,6 +581,9 @@
             "get": {
                 "description": "Returns fixed set of months (12) filtered by 'kidnap' event type. Sorting by months common order. From and to params must be YYYYMM format, indicating first and last months of the period requested.",
                 "parameters": [
+                    {
+                        "$ref": "#/parameters/auth"
+                    },
                     {
                         "$ref": "#/parameters/from"
                     },
@@ -666,6 +749,9 @@
                 "description": "Returns accumulated 'kidnap' event amount groupped by fixed set of professional groups. (Sorted by kidnap event value).",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/auth"
+                    },
+                    {
                         "$ref": "#/parameters/from"
                     },
                     {
@@ -708,6 +794,9 @@
             "get": {
                 "description": "Returns accumulated 'kidnap' event amount groupped by fixed set of regions. (Sorted by kidnap event value).",
                 "parameters": [
+                    {
+                        "$ref": "#/parameters/auth"
+                    },
                     {
                         "$ref": "#/parameters/from"
                     },
@@ -783,6 +872,9 @@
                 "description": "Returns accumulated amount of the event requested in 'filter' param groupped by fixed set of regions. (Sorted by 'value').",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/auth"
+                    },
+                    {
                         "$ref": "#/parameters/from"
                     },
                     {
@@ -830,6 +922,9 @@
             "get": {
                 "description": "Returns accumulated amount of the event requested in 'filter' param grouped by contry returned. (Sorted by 'value' (total)).",
                 "parameters": [
+                    {
+                        "$ref": "#/parameters/auth"
+                    },
                     {
                         "$ref": "#/parameters/from"
                     },
@@ -923,6 +1018,9 @@
                 "description": "Returns accumulated amount (incl. in percentage) of the events groupped by fixed set of terrorist attack types. (Sorted by 'value'). Attacks types set should always present even if no data per type found.",
                 "parameters": [
                     {
+                        "$ref": "#/parameters/auth"
+                    },
+                    {
                         "$ref": "#/parameters/from"
                     },
                     {
@@ -964,6 +1062,9 @@
             "get": {
                 "description": "Returns accumulated amount of the events groupped by year and predefined set of kidnap result types ('killed', 'released', 'escaped', 'rescued'). Ordered by year (recent-oldest).",
                 "parameters": [
+                    {
+                        "$ref": "#/parameters/auth"
+                    },
                     {
                         "$ref": "#/parameters/from"
                     },
@@ -1028,6 +1129,13 @@
         }
     },
     "parameters": {
+        "auth": {
+            "name": "Authorization",
+            "in": "header",
+            "type": "string",
+            "required": true,
+            "description": "put into value: Token token='y4...DNB8HQ==', email='user@test.com'"
+        },
         "from": {
             "name": "from",
             "in": "path",

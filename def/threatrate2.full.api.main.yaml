@@ -8,14 +8,48 @@ basePath: /api/v1
 produces:
   - application/json
 paths:
-  '/countries/':
+  /sessions/:
+    post:
+      description: Authtorization endpoint. Use Basic Auth to receive api_token. After you receive api token, you shold use it in all other enpoints, see descreption of Authorization parameter
+      parameters:
+        - name: Authorization
+          type: string
+          in: header
+          required: true
+          description: >-
+            put into value string with next format "Basic crypted_credentials",
+            where crypted_credentials = Base64.encode(email + ':' + password)
+      responses:
+        200:
+          description: you rceive api_token and email which was sended in request header
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                description: email seneded in request header 
+              api_token:
+                type: string
+                description: api_token for future authorization
+          examples:
+            email: user@test.com
+            api_token: KRJHfsg/pFSZayBODZJUc3A03cPOhuKWxrTg==
+        401:
+          description: wrong email or password, or you use private email adress from one of next subdomains gmail, yahoo. mail, yandex
+          schema:
+            $ref: '#/definitions/StandardDataResponse'
+
+    
+  /countries/:
     get:
       description: List of countries accessible by user
+      parameters:
+        - $ref: '#/parameters/auth'
       responses:
         '200':
           description: >-
-            A standard response. Country id is required.
-            Name is downcased ISO 3166-1 Alpha-3 code
+            A standard response. Country id is required. Name is downcased ISO
+            3166-1 Alpha-3 code
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
@@ -23,10 +57,11 @@ paths:
               - id: 93
                 name: can
                 title: Canada
-  '/by_locations/':
+  /by_locations/:
     get:
-      description: Kidnap locations with amount of incidents, filtered by country and year
+      description: 'Kidnap locations with amount of incidents, filtered by country and year'
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/country_id'
         - $ref: '#/parameters/year'
       responses:
@@ -37,31 +72,35 @@ paths:
           examples:
             result:
               - value: 93
-                name: "Hotel"
-                title: "93 Hotel"
-  '/by_genders/':
+                name: Hotel
+                title: 93 Hotel
+  /by_genders/:
     get:
-      description: Adult and children genders with amount of incidents, filtered by country and year
+      description: >-
+        Adult and children genders with amount of incidents, filtered by country
+        and year
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/country_id'
         - $ref: '#/parameters/year'
       responses:
         '200':
-          description: A standard response. Childerens age is 0-18, Adults 18 and up
+          description: 'A standard response. Childerens age is 0-18, Adults 18 and up'
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
               - by_genders:
-                - Male: 45
-                  Female: 56
+                  - Male: 45
+                    Female: 56
               - by_child_genders:
-                - Male: 60
-                  Female: 58
-  '/by_duration/':
+                  - Male: 60
+                    Female: 58
+  /by_duration/:
     get:
       description: Average duration per year filtered by country
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/country_id'
       responses:
         '200':
@@ -70,37 +109,43 @@ paths:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
-              - year: "2004"
+              - year: '2004'
                 value: 14
-  '/by_ages/':
+  /by_ages/:
     get:
-      description: Annual number by age & gender, filtered by country and year
+      description: 'Annual number by age & gender, filtered by country and year'
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/country_id'
         - $ref: '#/parameters/year'
       responses:
         '200':
-          description: A standard response. Name is one of '1-10', '11-18', '19-25', '26-35', '36-65', '66 up', 'N/A'
+          description: >-
+            A standard response. Name is one of '1-10', '11-18', '19-25',
+            '26-35', '36-65', '66 up', 'N/A'
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
-              - name: "Male"
+              - name: Male
                 data:
-                  - name: '1-10'
+                  - name: 1-10
                     value: 5
-                  - name: '11-18'
+                  - name: 11-18
                     value: 4
-              - name: "Female"
+              - name: Female
                 data:
-                  - name: '19-25'
+                  - name: 19-25
                     value: 8
-                  - name: '26-35'
+                  - name: 26-35
                     value: 9
-  '/by_victims/':
+  /by_victims/:
     get:
-      description: Number of victims per kidnapping type, filtered by country and year. Type is Single or Multi
+      description: >-
+        Number of victims per kidnapping type, filtered by country and year.
+        Type is Single or Multi
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/country_id'
         - $ref: '#/parameters/year'
       responses:
@@ -110,14 +155,15 @@ paths:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
-              - name: "Single"
+              - name: Single
                 value: 4
-              - name: "Multi"
+              - name: Multi
                 value: 9
-  '/by_month/':
+  /by_month/:
     get:
-      description: Monthly kidnapping number, filtered by country and year
+      description: 'Monthly kidnapping number, filtered by country and year'
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/country_id'
         - $ref: '#/parameters/year'
       responses:
@@ -128,52 +174,55 @@ paths:
           examples:
             result:
               - value: 16
-                name: "Jan"
-                title: "16 in Jan"
-  '/by_outcome/':
+                name: Jan
+                title: 16 in Jan
+  /by_outcome/:
     get:
-      description: Victim outcome, filtered by country and year
+      description: 'Victim outcome, filtered by country and year'
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/country_id'
         - $ref: '#/parameters/year'
       responses:
         '200':
           description: >-
-            A standard response. Name is one of:
-            released, escaped, killed, rescued, other
+            A standard response. Name is one of: released, escaped, killed,
+            rescued, other
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
               - value: 13
-                name: "killed"
-                title: "Killed"
+                name: killed
+                title: Killed
               - value: 25
-                name: "released"
-                title: "Released"
-  '/by_nationality/':
+                name: released
+                title: Released
+  /by_nationality/:
     get:
-      description: Victim nationality, filtered by country and year
+      description: 'Victim nationality, filtered by country and year'
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/country_id'
         - $ref: '#/parameters/year'
       responses:
         '200':
-          description: A standard response. Name is one of local, foreigner
+          description: 'A standard response. Name is one of local, foreigner'
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
             result:
               - value: 183
-                name: "local"
-                title: "Local"
+                name: local
+                title: Local
               - value: 256
-                name: "foreigner"
-                title: "Foreigner"
-  '/by_sector/':
+                name: foreigner
+                title: Foreigner
+  /by_sector/:
     get:
-      description: Victim Professional/sector background, filtered by country and year
+      description: 'Victim Professional/sector background, filtered by country and year'
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/country_id'
         - $ref: '#/parameters/year'
       responses:
@@ -184,15 +233,16 @@ paths:
           examples:
             result:
               - value: 5
-                name: "agriculture"
-                title: "Agriculture"
+                name: agriculture
+                title: Agriculture
               - value: 56
-                name: "entertainment"
-                title: "Entertainment"
-  '/by_randoms/':
+                name: entertainment
+                title: Entertainment
+  /by_randoms/:
     get:
-      description: Average Demanded Ransom US$, filtered by country
+      description: 'Average Demanded Ransom US$, filtered by country'
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/country_id'
       responses:
         '200':
@@ -202,10 +252,9 @@ paths:
           examples:
             result:
               - value: 5584
-                year: "2012"
+                year: '2012'
               - value: 15586
-                year: "2013"
-
+                year: '2013'
   '/countriesByKidnap/{from}/{to}/':
     get:
       description: >-
@@ -213,6 +262,7 @@ paths:
         filtering, ordering and output settings. The endpoint serves big amount
         of  charts.
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
         - $ref: '#/parameters/top'
@@ -257,7 +307,11 @@ paths:
             - males
             - females
           description: >-
-            Coma delimited array. Defines which additional data/properties should be returned with basic data (read response additional fields description). In case of 'geolocations' value, only three top geolocation (parts of the country are returned (ordered by the highest value).
+            Coma delimited array. Defines which additional data/properties
+            should be returned with basic data (read response additional fields
+            description). In case of 'geolocations' value, only three top
+            geolocation (parts of the country are returned (ordered by the
+            highest value).
       responses:
         '200':
           description: >-
@@ -287,15 +341,18 @@ paths:
                     title: Vancouver
                   - value: 12
                     title: Toronto
-                males: 145,
+                males: '145,'
                 females: 89
               - value: 150
                 name: etc...
   '/monthsByKidnap/{from}/{to}/':
     get:
       description: >-
-        Returns fixed set of months (12) filtered by 'kidnap' event type. Sorting by months common order. From and to params must be YYYYMM format, indicating first and last months of the period requested.
+        Returns fixed set of months (12) filtered by 'kidnap' event type.
+        Sorting by months common order. From and to params must be YYYYMM
+        format, indicating first and last months of the period requested.
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
         - $ref: '#/parameters/region'
@@ -303,7 +360,8 @@ paths:
       responses:
         '200':
           description: >-
-            A standard response with additional fields/collections per data objects. Months id (by order in a year) and name are required.
+            A standard response with additional fields/collections per data
+            objects. Months id (by order in a year) and name are required.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
@@ -322,7 +380,8 @@ paths:
   '/locationsByKidnap/{from}/{to}/':
     get:
       description: >-
-        Returns fixed set of locations (places/spots) filtered by 'kidnap' event type with various filtering, ordering and output settings.
+        Returns fixed set of locations (places/spots) filtered by 'kidnap' event
+        type with various filtering, ordering and output settings.
       parameters:
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
@@ -339,7 +398,8 @@ paths:
       responses:
         '200':
           description: >-
-            A standard response with additional fields/collections per data objects. Id of the location can be ommited, but name is required.
+            A standard response with additional fields/collections per data
+            objects. Id of the location can be ommited, but name is required.
           schema:
             $ref: '#/definitions/StandardDataResponse'
           examples:
@@ -402,8 +462,10 @@ paths:
   '/profsByKidnap/{from}/{to}/':
     get:
       description: >-
-        Returns accumulated 'kidnap' event amount groupped by fixed set of professional groups. (Sorted by kidnap event value).
+        Returns accumulated 'kidnap' event amount groupped by fixed set of
+        professional groups. (Sorted by kidnap event value).
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
         - $ref: '#/parameters/region'
@@ -428,8 +490,10 @@ paths:
   '/regionsByKidnap/{from}/{to}/':
     get:
       description: >-
-        Returns accumulated 'kidnap' event amount groupped by fixed set of regions. (Sorted by kidnap event value).
+        Returns accumulated 'kidnap' event amount groupped by fixed set of
+        regions. (Sorted by kidnap event value).
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
         - name: filter
@@ -453,7 +517,10 @@ paths:
             - duration_range
             - ransom_range
           description: >-
-            Coma delimited array. Defines which additional data/properties should be returned with basic data ('duration_range' and 'ransom_range' differ from 'duration' and 'ransom' (unlike other similar endpoints)).
+            Coma delimited array. Defines which additional data/properties
+            should be returned with basic data ('duration_range' and
+            'ransom_range' differ from 'duration' and 'ransom' (unlike other
+            similar endpoints)).
       responses:
         '200':
           description: >-
@@ -484,6 +551,7 @@ paths:
         Returns accumulated amount of the event requested in 'filter' param
         groupped by fixed set of regions. (Sorted by 'value').
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
         - name: filter
@@ -519,6 +587,7 @@ paths:
         Returns accumulated amount of the event requested in 'filter' param
         grouped by contry returned. (Sorted by 'value' (total)).
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
         - $ref: '#/parameters/country'
@@ -583,6 +652,7 @@ paths:
         by fixed set of terrorist attack types. (Sorted by 'value'). Attacks
         types set should always present even if no data per type found.
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
         - $ref: '#/parameters/region'
@@ -610,6 +680,7 @@ paths:
         set of kidnap result types ('killed', 'released', 'escaped', 'rescued').
         Ordered by year (recent-oldest).
       parameters:
+        - $ref: '#/parameters/auth'
         - $ref: '#/parameters/from'
         - $ref: '#/parameters/to'
         - $ref: '#/parameters/region'
@@ -626,7 +697,7 @@ paths:
               - value: 85
                 percentage: 0.15
                 id: 2015
-                name:
+                name: null
                 title: '2015'
                 data:
                   - value: 15
@@ -644,8 +715,14 @@ paths:
               - value: 135
                 percentage: 0.15
                 id: 2016
-                name:
+                name: null
 parameters:
+  auth:
+    name: Authorization
+    in: header
+    type: string
+    required: true
+    description: "put into value: Token token='y4...DNB8HQ==', email='user@test.com'"
   from:
     name: from
     in: path
@@ -669,7 +746,9 @@ parameters:
     default: 200
     required: false
     description: >-
-      If provided, defines maximum amount of items to be returned ordered default value param (or the one defined by 'orderBy'). Can have another default value for particular endpoints.
+      If provided, defines maximum amount of items to be returned ordered
+      default value param (or the one defined by 'orderBy'). Can have another
+      default value for particular endpoints.
   region:
     name: region
     in: query
@@ -749,29 +828,26 @@ definitions:
         type: number
         format: integer
         description: >-
-          A unique identifier as number. 
-          Can be required for some endpoints. 
+          A unique identifier as number.  Can be required for some endpoints. 
           Can be replaced with 'name' parameter if not available.
       name:
         type: string
         description: >-
-          A unique identifier as string value, which can be used instead of id (in case if id is unavailable). 
-          Can be required for some endpoints.
+          A unique identifier as string value, which can be used instead of id
+          (in case if id is unavailable).  Can be required for some endpoints.
       value:
         type: number
         format: decimal
-        description: >-
-          A numeric value if exists.
+        description: A numeric value if exists.
       title:
         type: string
-        description: >-
-          Main value for representing titling of a data node.
+        description: Main value for representing titling of a data node.
       percentage:
         type: number
         format: float
         description: >-
-          Main value for presenting of numeric percentage (not value!).
-          Should be rounded to max 4 digits after comma.
+          Main value for presenting of numeric percentage (not value!). Should
+          be rounded to max 4 digits after comma.
     required:
       - id
       - name
