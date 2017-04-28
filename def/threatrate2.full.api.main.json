@@ -1,0 +1,1178 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "ThreatRate 2",
+        "version": "2.1.0"
+    },
+    "schemes": [
+        "https"
+    ],
+    "basePath": "/api/v1",
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/countries/": {
+            "get": {
+                "description": "List of countries accessible by user",
+                "responses": {
+                    "200": {
+                        "description": "A standard response. Country id is required. Name is downcased ISO 3166-1 Alpha-3 code",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "id": 93,
+                                    "name": "can",
+                                    "title": "Canada"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/by_locations/": {
+            "get": {
+                "description": "Kidnap locations with amount of incidents, filtered by country and year",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/country_id"
+                    },
+                    {
+                        "$ref": "#/parameters/year"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response. Title is a string concatinated value and name",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "value": 93,
+                                    "name": "Hotel",
+                                    "title": "93 Hotel"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/by_genders/": {
+            "get": {
+                "description": "Adult and children genders with amount of incidents, filtered by country and year",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/country_id"
+                    },
+                    {
+                        "$ref": "#/parameters/year"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response. Childerens age is 0-18, Adults 18 and up",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "by_genders": [
+                                        {
+                                            "Male": 45,
+                                            "Female": 56
+                                        }
+                                    ]
+                                },
+                                {
+                                    "by_child_genders": [
+                                        {
+                                            "Male": 60,
+                                            "Female": 58
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/by_duration/": {
+            "get": {
+                "description": "Average duration per year filtered by country",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/country_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response.",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "year": "2004",
+                                    "value": 14
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/by_ages/": {
+            "get": {
+                "description": "Annual number by age & gender, filtered by country and year",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/country_id"
+                    },
+                    {
+                        "$ref": "#/parameters/year"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response. Name is one of '1-10', '11-18', '19-25', '26-35', '36-65', '66 up', 'N/A'",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "name": "Male",
+                                    "data": [
+                                        {
+                                            "name": "1-10",
+                                            "value": 5
+                                        },
+                                        {
+                                            "name": "11-18",
+                                            "value": 4
+                                        }
+                                    ]
+                                },
+                                {
+                                    "name": "Female",
+                                    "data": [
+                                        {
+                                            "name": "19-25",
+                                            "value": 8
+                                        },
+                                        {
+                                            "name": "26-35",
+                                            "value": 9
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/by_victims/": {
+            "get": {
+                "description": "Number of victims per kidnapping type, filtered by country and year. Type is Single or Multi",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/country_id"
+                    },
+                    {
+                        "$ref": "#/parameters/year"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "name": "Single",
+                                    "value": 4
+                                },
+                                {
+                                    "name": "Multi",
+                                    "value": 9
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/by_month/": {
+            "get": {
+                "description": "Monthly kidnapping number, filtered by country and year",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/country_id"
+                    },
+                    {
+                        "$ref": "#/parameters/year"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response. Title is value concatinated with Month",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "value": 16,
+                                    "name": "Jan",
+                                    "title": "16 in Jan"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/by_outcome/": {
+            "get": {
+                "description": "Victim outcome, filtered by country and year",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/country_id"
+                    },
+                    {
+                        "$ref": "#/parameters/year"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response. Name is one of: released, escaped, killed, rescued, other",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "value": 13,
+                                    "name": "killed",
+                                    "title": "Killed"
+                                },
+                                {
+                                    "value": 25,
+                                    "name": "released",
+                                    "title": "Released"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/by_nationality/": {
+            "get": {
+                "description": "Victim nationality, filtered by country and year",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/country_id"
+                    },
+                    {
+                        "$ref": "#/parameters/year"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response. Name is one of local, foreigner",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "value": 183,
+                                    "name": "local",
+                                    "title": "Local"
+                                },
+                                {
+                                    "value": 256,
+                                    "name": "foreigner",
+                                    "title": "Foreigner"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/by_sector/": {
+            "get": {
+                "description": "Victim Professional/sector background, filtered by country and year",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/country_id"
+                    },
+                    {
+                        "$ref": "#/parameters/year"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response.",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "value": 5,
+                                    "name": "agriculture",
+                                    "title": "Agriculture"
+                                },
+                                {
+                                    "value": 56,
+                                    "name": "entertainment",
+                                    "title": "Entertainment"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/by_randoms/": {
+            "get": {
+                "description": "Average Demanded Ransom US$, filtered by country",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/country_id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response.",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "value": 5584,
+                                    "year": "2012"
+                                },
+                                {
+                                    "value": 15586,
+                                    "year": "2013"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/countriesByKidnap/{from}/{to}/": {
+            "get": {
+                "description": "Returns countries filtered by 'kidnap' event type with various filtering, ordering and output settings. The endpoint serves big amount of  charts.",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/from"
+                    },
+                    {
+                        "$ref": "#/parameters/to"
+                    },
+                    {
+                        "$ref": "#/parameters/top"
+                    },
+                    {
+                        "$ref": "#/parameters/region"
+                    },
+                    {
+                        "$ref": "#/parameters/country"
+                    },
+                    {
+                        "name": "filter",
+                        "type": "string",
+                        "in": "query",
+                        "required": false,
+                        "enum": [
+                            "children",
+                            "adults",
+                            "locals",
+                            "foreigners"
+                        ],
+                        "description": "Filters initial data by one of predefined (in the enum) category."
+                    },
+                    {
+                        "name": "orderBy",
+                        "type": "string",
+                        "in": "query",
+                        "enum": [
+                            "kidnap",
+                            "duration",
+                            "ransom"
+                        ],
+                        "default": "kidnap",
+                        "required": false,
+                        "description": "Is important to sort the output set by this parameter before taking top (first) items in case of defined '#/parameters/top' parameter. If not defined, the data is sorted by kidnap amount per country."
+                    },
+                    {
+                        "name": "include",
+                        "type": "array",
+                        "collectionFormat": "csv",
+                        "in": "query",
+                        "items": {
+                            "type": "string"
+                        },
+                        "required": false,
+                        "enum": [
+                            "duration",
+                            "ransom",
+                            "duration_range",
+                            "ransom_range",
+                            "geolocations",
+                            "males",
+                            "females"
+                        ],
+                        "description": "Coma delimited array. Defines which additional data/properties should be returned with basic data (read response additional fields description). In case of 'geolocations' value, only three top geolocation (parts of the country are returned (ordered by the highest value)."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response with additional fields/collections per data objects. Country id is required.",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "value": 234,
+                                    "percentage": 0.15,
+                                    "id": 93,
+                                    "name": "can",
+                                    "title": "Canada",
+                                    "duration": 9,
+                                    "ransom": 2,
+                                    "duration_range": {
+                                        "from": 50,
+                                        "to": 55
+                                    },
+                                    "ransom_range": {
+                                        "from": 0.5,
+                                        "to": 2
+                                    },
+                                    "geolocations": [
+                                        {
+                                            "value": 110,
+                                            "title": "Ottawa"
+                                        },
+                                        {
+                                            "value": 92,
+                                            "title": "Vancouver"
+                                        },
+                                        {
+                                            "value": 12,
+                                            "title": "Toronto"
+                                        }
+                                    ],
+                                    "males": "145,",
+                                    "females": 89
+                                },
+                                {
+                                    "value": 150,
+                                    "name": "etc..."
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/monthsByKidnap/{from}/{to}/": {
+            "get": {
+                "description": "Returns fixed set of months (12) filtered by 'kidnap' event type. Sorting by months common order. From and to params must be YYYYMM format, indicating first and last months of the period requested.",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/from"
+                    },
+                    {
+                        "$ref": "#/parameters/to"
+                    },
+                    {
+                        "$ref": "#/parameters/region"
+                    },
+                    {
+                        "$ref": "#/parameters/country"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response with additional fields/collections per data objects. Months id (by order in a year) and name are required.",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "value": 130,
+                                    "percentage": 0.15,
+                                    "id": 1,
+                                    "name": "jan",
+                                    "title": "January",
+                                    "year": 2016
+                                },
+                                {
+                                    "value": 73,
+                                    "id": 2,
+                                    "name": "feb",
+                                    "title": "February",
+                                    "year": 2016
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/locationsByKidnap/{from}/{to}/": {
+            "get": {
+                "description": "Returns fixed set of locations (places/spots) filtered by 'kidnap' event type with various filtering, ordering and output settings.",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/from"
+                    },
+                    {
+                        "$ref": "#/parameters/to"
+                    },
+                    {
+                        "$ref": "#/parameters/region"
+                    },
+                    {
+                        "$ref": "#/parameters/country"
+                    },
+                    {
+                        "name": "filter",
+                        "type": "string",
+                        "in": "query",
+                        "required": false,
+                        "enum": [
+                            "males",
+                            "females"
+                        ],
+                        "description": "Filters initial data by one of predefined (in the enum) category."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response with additional fields/collections per data objects. Id of the location can be ommited, but name is required.",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "value": 130,
+                                    "percentage": 0.15,
+                                    "name": "home",
+                                    "title": "Home"
+                                },
+                                {
+                                    "value": 73,
+                                    "percentage": 0.15,
+                                    "name": "hotel"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/ageGroupsByKidnap/{from}/{to}/": {
+            "get": {
+                "description": "Returns accumulated 'kidnap' event amount groupped by fixed set of age groups. (Sorted from 'younges' to 'oldest'). (Enum values '1-10', '11-18', '19-25', '26-35', '36-65', '66-up')",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/from"
+                    },
+                    {
+                        "$ref": "#/parameters/to"
+                    },
+                    {
+                        "$ref": "#/parameters/region"
+                    },
+                    {
+                        "$ref": "#/parameters/country"
+                    },
+                    {
+                        "name": "include",
+                        "type": "array",
+                        "collectionFormat": "csv",
+                        "in": "query",
+                        "items": {
+                            "type": "string"
+                        },
+                        "required": false,
+                        "enum": [
+                            "duration_range",
+                            "ransom_range"
+                        ],
+                        "description": "Coma delimited array. Defines which additional data/properties should be returned with basic data ('duration_range' and 'ransom_range' differ from 'duration' and 'ransom' (not like for other similar endpoints))."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response with additional fields/collections per data objects. Age group name is required. Id can be omitted.",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "value": 5,
+                                    "percentage": 0.15,
+                                    "name": "1-10",
+                                    "title": "1-10 years",
+                                    "duration_range": {
+                                        "from": 50,
+                                        "to": 55
+                                    },
+                                    "ransom_range": {
+                                        "from": 0.5,
+                                        "to": 2
+                                    }
+                                },
+                                {
+                                    "value": 15,
+                                    "percentage": 0.25,
+                                    "name": "11-18"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/profsByKidnap/{from}/{to}/": {
+            "get": {
+                "description": "Returns accumulated 'kidnap' event amount groupped by fixed set of professional groups. (Sorted by kidnap event value).",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/from"
+                    },
+                    {
+                        "$ref": "#/parameters/to"
+                    },
+                    {
+                        "$ref": "#/parameters/region"
+                    },
+                    {
+                        "$ref": "#/parameters/country"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response with additional fields/collections per data objects. Group name is required.",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "value": 7,
+                                    "percentage": 0.15,
+                                    "name": "ngo",
+                                    "title": "NGO"
+                                },
+                                {
+                                    "value": 15,
+                                    "percentage": 0.15,
+                                    "name": "medical",
+                                    "title": "Medical"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/regionsByKidnap/{from}/{to}/": {
+            "get": {
+                "description": "Returns accumulated 'kidnap' event amount groupped by fixed set of regions. (Sorted by kidnap event value).",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/from"
+                    },
+                    {
+                        "$ref": "#/parameters/to"
+                    },
+                    {
+                        "name": "filter",
+                        "type": "string",
+                        "in": "query",
+                        "required": false,
+                        "enum": [
+                            "single",
+                            "multi"
+                        ],
+                        "description": "Filters initial data by one of predefined (in the enum) category."
+                    },
+                    {
+                        "name": "include",
+                        "type": "array",
+                        "collectionFormat": "csv",
+                        "in": "query",
+                        "items": {
+                            "type": "string"
+                        },
+                        "required": false,
+                        "enum": [
+                            "duration",
+                            "ransom",
+                            "duration_range",
+                            "ransom_range"
+                        ],
+                        "description": "Coma delimited array. Defines which additional data/properties should be returned with basic data ('duration_range' and 'ransom_range' differ from 'duration' and 'ransom' (unlike other similar endpoints))."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response with additional fields/collections per data objects. Region name is required.",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "value": 155,
+                                    "percentage": 0.15,
+                                    "name": "namerica",
+                                    "title": "America",
+                                    "duration": 15,
+                                    "duration_range": {
+                                        "from": 12,
+                                        "to": 20
+                                    },
+                                    "ransom": 1,
+                                    "ransom_range": {
+                                        "from": 0.5,
+                                        "to": 2
+                                    }
+                                },
+                                {
+                                    "value": 15,
+                                    "percentage": 0.15,
+                                    "name": "samerica"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/regionsByEventType/{from}/{to}/": {
+            "get": {
+                "description": "Returns accumulated amount of the event requested in 'filter' param groupped by fixed set of regions. (Sorted by 'value').",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/from"
+                    },
+                    {
+                        "$ref": "#/parameters/to"
+                    },
+                    {
+                        "name": "filter",
+                        "type": "string",
+                        "in": "query",
+                        "required": false,
+                        "enum": [
+                            "kidnap",
+                            "vehicle"
+                        ],
+                        "default": "kidnap",
+                        "description": "Filters initial data by one of predefined (in the enum) category. Additional filter categories should be further implemented."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response with additional fields/collections per data objects. Region name is required.",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "value": 155,
+                                    "percentage": 0.15,
+                                    "name": "namerica",
+                                    "title": "America"
+                                },
+                                {
+                                    "value": 15,
+                                    "percentage": 0.15,
+                                    "name": "samerica"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/countriesByEventType/{from}/{to}/": {
+            "get": {
+                "description": "Returns accumulated amount of the event requested in 'filter' param grouped by contry returned. (Sorted by 'value' (total)).",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/from"
+                    },
+                    {
+                        "$ref": "#/parameters/to"
+                    },
+                    {
+                        "$ref": "#/parameters/country"
+                    },
+                    {
+                        "$ref": "#/parameters/region"
+                    },
+                    {
+                        "$ref": "#/parameters/top"
+                    },
+                    {
+                        "name": "filter",
+                        "type": "string",
+                        "in": "query",
+                        "required": false,
+                        "enum": [
+                            "kidnap",
+                            "vehicle",
+                            "unrest",
+                            "suicide",
+                            "kidnap_victims_killed"
+                        ],
+                        "default": "kidnap",
+                        "description": "Filters initial data by one of predefined (in the enum) category."
+                    },
+                    {
+                        "name": "include",
+                        "type": "array",
+                        "collectionFormat": "csv",
+                        "in": "query",
+                        "items": {
+                            "type": "string"
+                        },
+                        "required": false,
+                        "enum": [
+                            "unrest_categories"
+                        ],
+                        "description": "Should be included only when 'unrest' filter is applied (otherwise it has no sense). Categores should present even with empty data (per category)."
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response with additional fields/collections per data objects. Country id is required.",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "value": 267,
+                                    "percentage": 0.15,
+                                    "id": 39,
+                                    "name": "bur",
+                                    "title": "Burundi",
+                                    "unrest_categories": [
+                                        {
+                                            "value": 40,
+                                            "name": "terrorism",
+                                            "title": "Terrorism"
+                                        },
+                                        {
+                                            "value": 15,
+                                            "name": "rebel",
+                                            "title": "Rebel Activity"
+                                        },
+                                        {
+                                            "value": 27,
+                                            "name": "racial",
+                                            "title": "Racially Motivated"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "value": 290,
+                                    "percentage": 0.15,
+                                    "name": "yem"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/attackTypes/{from}/{to}/": {
+            "get": {
+                "description": "Returns accumulated amount (incl. in percentage) of the events groupped by fixed set of terrorist attack types. (Sorted by 'value'). Attacks types set should always present even if no data per type found.",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/from"
+                    },
+                    {
+                        "$ref": "#/parameters/to"
+                    },
+                    {
+                        "$ref": "#/parameters/region"
+                    },
+                    {
+                        "$ref": "#/parameters/country"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response with additional fields/collections per data objects.",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "value": 250,
+                                    "percentage": 0.45,
+                                    "name": "hijaking",
+                                    "title": "Hijaking"
+                                },
+                                {
+                                    "value": 27,
+                                    "percentage": 0.08,
+                                    "name": "wmd"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/yearsByKidnapResult/{from}/{to}/": {
+            "get": {
+                "description": "Returns accumulated amount of the events groupped by year and predefined set of kidnap result types ('killed', 'released', 'escaped', 'rescued'). Ordered by year (recent-oldest).",
+                "parameters": [
+                    {
+                        "$ref": "#/parameters/from"
+                    },
+                    {
+                        "$ref": "#/parameters/to"
+                    },
+                    {
+                        "$ref": "#/parameters/region"
+                    },
+                    {
+                        "$ref": "#/parameters/country"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A standard response with additional fields/collections per data objects. Years id and name are required.",
+                        "schema": {
+                            "$ref": "#/definitions/StandardDataResponse"
+                        },
+                        "examples": {
+                            "result": [
+                                {
+                                    "value": 85,
+                                    "percentage": 0.15,
+                                    "id": 2015,
+                                    "name": null,
+                                    "title": "2015",
+                                    "data": [
+                                        {
+                                            "value": 15,
+                                            "name": "killed",
+                                            "title": "Killed"
+                                        },
+                                        {
+                                            "value": 20,
+                                            "name": "released",
+                                            "title": "Released"
+                                        },
+                                        {
+                                            "value": 25,
+                                            "name": "escaped",
+                                            "title": "Escaped"
+                                        },
+                                        {
+                                            "value": 25,
+                                            "name": "resqued",
+                                            "title": "Resqued"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "value": 135,
+                                    "percentage": 0.15,
+                                    "id": 2016,
+                                    "name": null
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "parameters": {
+        "from": {
+            "name": "from",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Format - 'YYYYMM' (or 'YYYY' for some cases). Date of start of filtered period."
+        },
+        "to": {
+            "name": "to",
+            "in": "path",
+            "type": "string",
+            "required": true,
+            "description": "Format - 'YYYYMM' (or 'YYYY' for some cases). Date of end of filtered period."
+        },
+        "top": {
+            "name": "top",
+            "in": "query",
+            "type": "integer",
+            "default": 200,
+            "required": false,
+            "description": "If provided, defines maximum amount of items to be returned ordered default value param (or the one defined by 'orderBy'). Can have another default value for particular endpoints."
+        },
+        "region": {
+            "name": "region",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "enum": [
+                "namerica",
+                "samerica",
+                "europe",
+                "asia",
+                "africa",
+                "oceania"
+            ],
+            "description": "If provided, the result must include data on all countries of this region."
+        },
+        "country": {
+            "name": "country",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "enum": [
+                "country predefine codes (ids)"
+            ],
+            "description": "If provided, the result must include data on particular country only. In case if 'region' parameter is also provided, only 'country' is uesd."
+        },
+        "country_id": {
+            "name": "country_id",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "enum": [
+                "country predefine codes (ids)"
+            ],
+            "description": "The result must include data on particular country only."
+        },
+        "year": {
+            "name": "year",
+            "in": "query",
+            "type": "integer",
+            "required": true,
+            "description": "The result must include data on particular year only."
+        }
+    },
+    "definitions": {
+        "StandardResponse": {
+            "type": "object",
+            "properties": {
+                "result": {
+                    "type": "object",
+                    "description": "Container for main data returned."
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Is mostly \"success\" for 200 status response. Might contain \"warning\" sometimes.",
+                    "enum": [
+                        "success",
+                        "warning",
+                        "error"
+                    ]
+                },
+                "message": {
+                    "type": "string",
+                    "description": "A message of error in case of \"error\" status. Or additional info for 200."
+                },
+                "code": {
+                    "type": "integer",
+                    "description": "Code error in case of \"error\" response."
+                }
+            },
+            "required": [
+                "status",
+                "result"
+            ]
+        },
+        "StandardDataResponse": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/StandardResponse"
+                },
+                {
+                    "properties": {
+                        "result": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/StandardValue"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "StandardValue": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "number",
+                    "format": "integer",
+                    "description": "A unique identifier as number.  Can be required for some endpoints.  Can be replaced with 'name' parameter if not available."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "A unique identifier as string value, which can be used instead of id (in case if id is unavailable).  Can be required for some endpoints."
+                },
+                "value": {
+                    "type": "number",
+                    "format": "decimal",
+                    "description": "A numeric value if exists."
+                },
+                "title": {
+                    "type": "string",
+                    "description": "Main value for representing titling of a data node."
+                },
+                "percentage": {
+                    "type": "number",
+                    "format": "float",
+                    "description": "Main value for presenting of numeric percentage (not value!). Should be rounded to max 4 digits after comma."
+                }
+            },
+            "required": [
+                "id",
+                "name",
+                "value"
+            ]
+        }
+    }
+}
