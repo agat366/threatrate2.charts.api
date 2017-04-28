@@ -1,8 +1,9 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "ThreatRate 2",
-        "version": "2.1.0"
+        "title": "ThreatRate API",
+        "version": "2.1.0",
+        "description": "## This API contains 3 main parts:\n### Login\n  * sessions\n  \n### Countries\n  * countries\n  * by_location\n  * by_gender\n  * by_duration\n  * by_age\n  * by_victim_type\n  * by_month\n  * by_outcome\n  * by_nationality\n  * by_sector\n  * by_ransom\n  \n### Charts\n  * countriesByKidnap\n  * monthsByKidnap\n  * locationsByKidnap\n  * ageGroupsByKidnap\n  * profsByKidnap\n  * regionsByKidnap\n  * regionsByEventType\n  * countriesByEventType\n  * attackTypes\n  * yearsByKidnapResult\n"
     },
     "schemes": [
         "https"
@@ -81,7 +82,7 @@
                 }
             }
         },
-        "/by_locations/": {
+        "/by_location/": {
             "get": {
                 "description": "Kidnap locations with amount of incidents, filtered by country and year",
                 "parameters": [
@@ -114,9 +115,9 @@
                 }
             }
         },
-        "/by_genders/": {
+        "/by_gender/": {
             "get": {
-                "description": "Adult and children genders with amount of incidents, filtered by country and year",
+                "description": "Adult and children gender with amount of incidents, filtered by country and year",
                 "parameters": [
                     {
                         "$ref": "#/parameters/auth"
@@ -187,7 +188,7 @@
                 }
             }
         },
-        "/by_ages/": {
+        "/by_age/": {
             "get": {
                 "description": "Annual number by age & gender, filtered by country and year",
                 "parameters": [
@@ -241,7 +242,7 @@
                 }
             }
         },
-        "/by_victims/": {
+        "/by_victim_type/": {
             "get": {
                 "description": "Number of victims per kidnapping type, filtered by country and year. Type is Single or Multi",
                 "parameters": [
@@ -424,7 +425,7 @@
                 }
             }
         },
-        "/by_randoms/": {
+        "/by_ransom/": {
             "get": {
                 "description": "Average Demanded Ransom US$, filtered by country",
                 "parameters": [

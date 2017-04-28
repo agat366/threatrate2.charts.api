@@ -1,14 +1,43 @@
 swagger: '2.0'
 info:
-  title: ThreatRate 2
+  title: ThreatRate API
   version: 2.1.0
+  description: |
+    ## This API contains 3 main parts:
+    ### Login
+      * sessions
+      
+    ### Countries
+      * countries
+      * by_location
+      * by_gender
+      * by_duration
+      * by_age
+      * by_victim_type
+      * by_month
+      * by_outcome
+      * by_nationality
+      * by_sector
+      * by_ransom
+      
+    ### Charts
+      * countriesByKidnap
+      * monthsByKidnap
+      * locationsByKidnap
+      * ageGroupsByKidnap
+      * profsByKidnap
+      * regionsByKidnap
+      * regionsByEventType
+      * countriesByEventType
+      * attackTypes
+      * yearsByKidnapResult
 schemes:
   - https
 basePath: /api/v1
 produces:
   - application/json
 paths:
-  /sessions/:
+  '/sessions/':
     post:
       description: Authtorization endpoint. Use Basic Auth to receive api_token. After you receive api token, you shold use it in all other enpoints, see descreption of Authorization parameter
       parameters:
@@ -38,9 +67,7 @@ paths:
           description: wrong email or password, or you use private email adress from one of next subdomains gmail, yahoo. mail, yandex
           schema:
             $ref: '#/definitions/StandardDataResponse'
-
-    
-  /countries/:
+  '/countries/':
     get:
       description: List of countries accessible by user
       parameters:
@@ -57,7 +84,7 @@ paths:
               - id: 93
                 name: can
                 title: Canada
-  /by_locations/:
+  '/by_location/':
     get:
       description: 'Kidnap locations with amount of incidents, filtered by country and year'
       parameters:
@@ -74,10 +101,10 @@ paths:
               - value: 93
                 name: Hotel
                 title: 93 Hotel
-  /by_genders/:
+  '/by_gender/':
     get:
       description: >-
-        Adult and children genders with amount of incidents, filtered by country
+        Adult and children gender with amount of incidents, filtered by country
         and year
       parameters:
         - $ref: '#/parameters/auth'
@@ -96,7 +123,7 @@ paths:
               - by_child_genders:
                   - Male: 60
                     Female: 58
-  /by_duration/:
+  '/by_duration/':
     get:
       description: Average duration per year filtered by country
       parameters:
@@ -111,7 +138,7 @@ paths:
             result:
               - year: '2004'
                 value: 14
-  /by_ages/:
+  '/by_age/':
     get:
       description: 'Annual number by age & gender, filtered by country and year'
       parameters:
@@ -139,7 +166,7 @@ paths:
                     value: 8
                   - name: 26-35
                     value: 9
-  /by_victims/:
+  '/by_victim_type/':
     get:
       description: >-
         Number of victims per kidnapping type, filtered by country and year.
@@ -159,7 +186,7 @@ paths:
                 value: 4
               - name: Multi
                 value: 9
-  /by_month/:
+  '/by_month/':
     get:
       description: 'Monthly kidnapping number, filtered by country and year'
       parameters:
@@ -176,7 +203,7 @@ paths:
               - value: 16
                 name: Jan
                 title: 16 in Jan
-  /by_outcome/:
+  '/by_outcome/':
     get:
       description: 'Victim outcome, filtered by country and year'
       parameters:
@@ -198,7 +225,7 @@ paths:
               - value: 25
                 name: released
                 title: Released
-  /by_nationality/:
+  '/by_nationality/':
     get:
       description: 'Victim nationality, filtered by country and year'
       parameters:
@@ -218,7 +245,7 @@ paths:
               - value: 256
                 name: foreigner
                 title: Foreigner
-  /by_sector/:
+  '/by_sector/':
     get:
       description: 'Victim Professional/sector background, filtered by country and year'
       parameters:
@@ -238,7 +265,7 @@ paths:
               - value: 56
                 name: entertainment
                 title: Entertainment
-  /by_randoms/:
+  '/by_ransom/':
     get:
       description: 'Average Demanded Ransom US$, filtered by country'
       parameters:
