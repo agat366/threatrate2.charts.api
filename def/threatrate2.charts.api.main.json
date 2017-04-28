@@ -411,7 +411,7 @@
                 }
             }
         },
-        "/regions/{from}/{to}/": {
+        "/regionsByEventType/{from}/{to}/": {
             "get": {
                 "description": "Returns accumulated amount of the event requested in 'filter' param groupped by fixed set of regions. (Sorted by 'value').",
                 "parameters": [

@@ -281,7 +281,7 @@ paths:
               - value: 15
                 percentage: 0.15
                 name: samerica
-  '/regions/{from}/{to}/':
+  '/regionsByEventType/{from}/{to}/':
     get:
       description: >-
         Returns accumulated amount of the event requested in 'filter' param
